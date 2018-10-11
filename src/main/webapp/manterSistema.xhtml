@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:co="http://java.sun.com/jsf/composite/sistema"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+
+		<h:form id="form" prependId="false">
+			<co:panelFloat>
+
+				<co:panel titulo="#{manterSistemaBean.modoDesc} Sistema">
+
+					<co:inputText labelValue="Descrição"
+						value="#{manterSistemaBean.sistema.descricao}" required="true"
+						containerWidth="Container100" />
+
+
+					<co:inputText labelValue="Sigla"
+						value="#{manterSistemaBean.sistema.sigla}" required="true"
+						containerWidth="Container100" />
+
+					<co:inputText labelValue="Email"
+						value="#{manterSistemaBean.sistema.email}" required="false" 
+						containerWidth="Container100" />
+
+
+					<co:inputText labelValue="Url"
+						value="#{manterSistemaBean.sistema.url}" required="false"
+						containerWidth="Container100" />
+
+
+					<co:panelButtons id="molduraBotoes">
+
+
+
+						<p:commandButton id="salvar" action="#{manterSistemaBean.salvar}"
+							value="Salvar" update="@form"
+							rendered="#{!manterSistemaBean.modoVisualizacao}"
+							styleClass="ResponsiveButton coButton1"
+							icon="fa fa-check Fs14 white" />
+
+						<p:commandButton value="Voltar" immediate="true"
+							id="idCadastrarServico" styleClass="ResponsiveButton coButton2"
+							ajax="false" action="pretty:pesquisarSistema"
+							icon="fa fa-plus Fs14 white" />
+
+
+					</co:panelButtons>
+
+				</co:panel>
+
+			</co:panelFloat>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

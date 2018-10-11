@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template.xhtml"
+	xmlns:co="http://java.sun.com/jsf/composite/sistema">
+
+		<ui:define name="content">
+
+		<h:form id="form" prependId="false">
+
+			<co:panelFloat id="pesquisarServicoPanel">
+
+				<co:panel titulo="Pesquisar Sistemas">
+
+					<co:inputText labelValue="Descrição"
+						value="#{pesquisaSistemaBean.sistemaCriteria.descricao}"
+						containerWidth="Container50" />
+						
+						<co:inputText labelValue="Sigla"
+						value="#{pesquisaSistemaBean.sistemaCriteria.sigla}"
+						containerWidth="Container50" />
+						
+						<co:inputText labelValue="Email de atendimento sistema"
+						value="#{pesquisaSistemaBean.sistemaCriteria.email}"
+						containerWidth="Container50" />
+
+					<co:fieldDecorator idComponent="idPesquisa" labelValue="">
+
+						<p:commandButton value="Pesquisar" id="idPesquisa"
+							styleClass="marginTopBtnPesquisar ResponsiveButton coButton2"
+							update="@form"
+							actionListener="#{pesquisaSistemaBean.pesquisarSistema()}"
+							icon="fa fa-search Fs14 white">
+						</p:commandButton>
+
+						<p:commandButton value="Cadastrar Sistema "
+							id="idCadastrarServico" styleClass="ResponsiveButton coButton2"
+							ajax="false"  action="pretty:incluirSistema"
+							icon="fa fa-plus Fs14 white" />
+
+
+					</co:fieldDecorator>
+
+					<div class="EmptyBox20" />
+					<p:separator />
+
+					<co:dataTable var="entity" id="resultadoDataTable" exporter="false"
+						value="#{pesquisaSistemaBean.resultadoPesquisa}"
+						rowKey="#{entity.id}">
+
+						<p:column id="iddescricao" style="text-align: center;" width="30%"
+							headerText="Descrição">
+							<h:outputText value="#{entity.descricao}" />
+						</p:column>
+
+						<p:column id="idSigla" style="text-align: center;"
+							width="10%" headerText="Sigla">
+							<h:outputText value="#{entity.sigla}" />
+						</p:column>
+
+						<p:column id="idUrl" style="text-align: center;"
+							headerText="Ativo" width="10%">
+							<h:outputText value="#{entity.url}">
+							</h:outputText>
+
+						</p:column>
+						
+							<p:column id="idemail" style="text-align: center;"
+							headerText="Email" width="10%">
+							<h:outputText value="#{entity.email}">
+							</h:outputText>
+
+						</p:column>
+
+
+						<p:column id="idstatus" style="text-align: center;"
+							headerText="Status" width="15%">
+							<h:outputText value="#{entity.status}">
+							</h:outputText>
+
+						</p:column>
+
+						<p:column width="7%" headerText="Ações" id="action"
+							exportable="false">
+
+
+						</p:column>
+
+					</co:dataTable>
+
+				</co:panel>
+
+			</co:panelFloat>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

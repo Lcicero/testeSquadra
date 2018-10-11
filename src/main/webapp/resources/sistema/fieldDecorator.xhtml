@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:component 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	>
+
+	<cc:interface>
+		<cc:attribute name="idComponent" required="true" />
+		<cc:attribute name="labelValue" required="true" />
+		<cc:attribute name="required" required="false" type="java.lang.Boolean" />
+		<cc:attribute name="disabled" required="false" type="java.lang.Boolean" />
+		<cc:attribute name="containerWidth" required="false" default="Container33" />
+	</cc:interface>
+
+	<cc:implementation>
+
+		<div class="#{cc.attrs.containerWidth} Responsive" >
+		
+			<div class="ContainerIndent">
+			
+				<div class="Container100 Responsive100">
+					<p:outputLabel for="#{cc.attrs.idComponent}" value="#{cc.attrs.labelValue}"  />
+				</div>
+
+				<div class="Container100 Responsive100">
+					<cc:insertChildren />
+				</div>
+				
+				<div class="Container100 Responsive100">
+					<p:message for="#{cc.attrs.idComponent}"/>
+				</div>
+				
+			</div>
+			
+		</div>		
+	
+	</cc:implementation>
+</ui:component>

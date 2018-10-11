@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:component 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	>
+
+	<cc:interface>
+		<cc:attribute name="titulo" required="true" />
+		<cc:attribute name="icone" required="false" default="fa fa-edit"/>
+		<cc:attribute name="setFocus" required="false" default="true" />
+	</cc:interface>
+
+	<cc:implementation>
+	
+	<ui:fragment rendered="#{cc.rendered}">		
+		<!-- Início Painel -->
+		<div class="Container">
+			
+				<div class="ContainerIndent">
+			
+					<p:panel>
+
+						<p:focus  rendered="#{cc.attrs.setFocus}"/>
+						
+						<div class="Container100 Responsive Fs20 FontBold">
+							<i class="#{cc.attrs.icone} Fleft MarRight10" style="margin-top: 3px;"></i>
+							<h:outputText class="FontRalewayBold" value="#{cc.attrs.titulo}"/>
+						</div>
+
+						<div class="EmptyBox10"></div>
+
+						<hr />
+						
+						<div class="EmptyBox10"></div>
+						
+						<!-- Início Filhos -->
+						<div class="Container">
+							<cc:insertChildren/>
+						</div>
+						<!-- Fim Filhos -->
+						
+					</p:panel>
+				</div>
+
+		</div>
+		<!-- Fim Painel -->		
+	</ui:fragment>
+	</cc:implementation>
+</ui:component>

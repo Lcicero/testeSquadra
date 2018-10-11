@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	>
+
+	<cc:interface>
+		<cc:valueHolder name="input" />
+
+		<cc:attribute name="var" required="true" />
+		<cc:attribute name="value" required="true" />
+		<cc:attribute name="rowKey" required="true" />
+		<cc:attribute name="fileNameExport" required="false"
+			default="relatorio" />
+		<cc:attribute name="rows" required="false" default="10" />
+		<cc:attribute name="rowStyleClass" required="false" />
+		<cc:attribute name="exporter" required="false"
+			type="java.lang.Boolean" default="true" />
+		<cc:attribute name="editable" required="false" default="false"
+			type="java.lang.Boolean" />
+		<cc:attribute name="paginator" required="false" default="true"
+			type="java.lang.Boolean" />
+		<cc:attribute name="lazy" required="false" default="true"
+			type="java.lang.Boolean" />
+		<cc:attribute name="editMode" required="false" default="cell"
+			type="String" />
+		<cc:attribute name="scrollable" required="false" default="false"
+			type="java.lang.Boolean" />
+		<cc:attribute name="stickyHeader" required="false" default="true"
+			type="java.lang.Boolean" />
+		<cc:attribute name="scrollHeight" required="false" />
+		<cc:attribute name="toggler" required="false" default="true"
+			type="java.lang.Boolean" />
+		<cc:attribute name="stick" required="false" default="false"
+			type="java.lang.Boolean" />
+		<cc:attribute name="rowsPerPageTemplate" required="false"
+			default="5,10,15,30,50" />
+		<cc:attribute name="tableTitle" required="false" default="" />
+
+
+
+	</cc:interface>
+
+	<cc:implementation>
+
+		<ui:fragment rendered="#{cc.rendered}">
+
+			<div id="#{cc.clientId}">
+
+				<p:dataTable id="input" value="#{cc.attrs.value}"
+					scrollable="#{cc.attrs.scrollable}"
+					scrollHeight="#{cc.attrs.scrollHeight}" rowKey="#{cc.attrs.rowKey}"
+					lazy="#{cc.attrs.lazy}" reflow="true"
+					emptyMessage="Nenhum registro encontrado para os critérios informados."
+					rows="#{cc.attrs.rows}"
+					paginator="#{not empty cc.attrs.value and cc.attrs.paginator}"
+					rowStyleClass="#{cc.attrs.rowStyleClass}" rowIndexVar="rowID"
+					editMode="#{cc.attrs.editMode}" editable="#{cc.attrs.editable}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					currentPageReportTemplate="({currentPage} de {totalPages}) Total de Registros: {totalRecords}"
+					rowsPerPageTemplate="#{cc.attrs.rowsPerPageTemplate}"
+					paginatorPosition="bottom" resizableColumns="true"
+					draggableColumns="true" stickyHeader="#{cc.attrs.stick}">
+
+					<f:facet name="header">
+						<p:commandButton id="toggler" type="button" value="Colunas"
+							style="float:inherit; width: 116px; display: flex;"
+							rendered="#{cc.attrs.toggler}" icon="ui-icon-calculator" />
+						<p:columnToggler datasource="input" trigger="toggler"
+							rendered="#{cc.attrs.toggler}" />
+						<p:tooltip for="toggler" showEffect="clip" hideEffect="explode"
+							rendered="#{cc.attrs.toggler}" />
+					</f:facet>
+
+					<c:set target="#{component}" property="var" value="#{cc.attrs.var}" />
+
+					<f:facet name="{Exporters}">
+
+						<ui:fragment
+							rendered="#{not empty cc.attrs.value and cc.attrs.exporter}">
+
+							<div class="Wrapper">
+
+								<div class="EmptyBox5" />
+
+								<div class="Container100 Responsive100 TexAlCenter">
+
+									<div class="gray Fs12">Exportar:</div>
+
+									<div class="EmptyBox5" />
+
+									<p:commandLink process="@this input" ajax="false"
+										immediate="true"
+										styleClass="Container5 DispInlBlock Responsive BorderedBox TexAlCenter Fnone HoverEffect"
+										style="margin-bottom:2px;">
+										<div class="ContainerIndent ">
+											<div class="EmptyBox10"></div>
+											<i class="fa fa-file-excel-o Fs20 green"
+												title="Exportar para XLS"></i>
+											<p:dataExporter type="xls" target="input"
+												postProcessor="#{downloadPdf.postProcessXLS}"
+												fileName="#{cc.attrs.fileNameExport}" encoding="ISO-8859-1" />
+											<span class="Fs10 DispBlock gray">XLS</span>
+											<div class="EmptyBox10"></div>
+										</div>
+									</p:commandLink>
+
+									<p:commandLink process="@this input" ajax="false"
+										immediate="true"
+										styleClass="Container5 DispInlBlock Responsive BorderedBox TexAlCenter Fnone HoverEffect"
+										style="margin-bottom:2px;margin-left:1%;">
+										<div class="ContainerIndent ">
+											<div class="EmptyBox10"></div>
+											<i class="fa fa-file-pdf-o Fs20 green"
+												title="Exportar para CSV"></i>
+											<f:setPropertyActionListener value="#{cc.attrs.tableTitle}"
+												target="#{downloadPdf.title}" />
+
+											<pe:exporter type="pdf" target="input" pageOnly="false"
+												datasetPadding="0"
+												skipComponents="org.primefaces.component.columntoggler.ColumnToggler,org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox,org.primefaces.component.spacer.Spacer,org.primefaces.component.outputpanel.OutputPanel"
+												encoding="ISO-8859-1" fileName="#{cc.attrs.fileNameExport}"
+												preProcessor="#{downloadPdf.preProcessPDF}" />
+											<span class="Fs10 DispBlock gray">PDF</span>
+											<div class="EmptyBox10"></div>
+										</div>
+									</p:commandLink>
+
+									<p:commandLink process="@this input" ajax="false"
+										immediate="true"
+										styleClass="Container5 DispInlBlock Responsive BorderedBox TexAlCenter Fnone HoverEffect"
+										style="margin-bottom:2px;margin-left:1%;">
+										<div class="ContainerIndent ">
+											<div class="EmptyBox10"></div>
+											<i class="fa fa-file-text-o Fs20 green"
+												title="Exportar para CSV"></i>
+											<p:dataExporter type="csv" target="input"
+												fileName="#{cc.attrs.fileNameExport}" encoding="ISO-8859-1" />
+											<span class="Fs10 DispBlock gray">CSV</span>
+											<div class="EmptyBox10"></div>
+										</div>
+									</p:commandLink>
+
+									<p:commandLink process="@this input" ajax="false"
+										immediate="true"
+										styleClass="Container5 DispInlBlock Responsive BorderedBox TexAlCenter Fnone HoverEffect"
+										style="margin-bottom:2px;margin-left:1%;">
+										<div class="ContainerIndent ">
+											<div class="EmptyBox10"></div>
+											<i class="fa fa-file-code-o Fs20 green"
+												title="Exportar para XML"></i>
+											<p:dataExporter type="xml" target="input"
+												fileName="#{cc.attrs.fileNameExport}" encoding="ISO-8859-1" />
+											<span class="Fs10 DispBlock gray">XML</span>
+											<div class="EmptyBox10"></div>
+										</div>
+									</p:commandLink>
+
+								</div>
+							</div>
+
+						</ui:fragment>
+
+					</f:facet>
+
+					<cc:insertChildren />
+
+				</p:dataTable>
+
+			</div>
+
+		</ui:fragment>
+
+	</cc:implementation>
+</ui:component>

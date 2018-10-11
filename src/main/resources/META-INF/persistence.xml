@@ -1,0 +1,27 @@
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+	<persistence-unit name="default" transaction-type="JTA">
+
+
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<jta-data-source>java:jboss/datasources/teste</jta-data-source>
+
+		<class>com.br.testesquadra.model.Sistema</class>
+
+		<properties>
+		
+			<property name="transaction.factory_class" value="org.hibernate.transaction.JTATransactionFactory" />  
+			
+			<property name="hibernate.hbm2ddl.auto" value="validate" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			
+		</properties>
+
+	</persistence-unit>
+
+
+</persistence>
